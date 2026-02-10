@@ -2,10 +2,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 import time
 
-# 1. Configuração da página
 st.set_page_config(page_title="Janox BI - Performance", layout="wide")
 
-# 2. CSS Ajustado (Garante cliques na sidebar e remove espaços brancos)
 st.markdown("""
     <style>
         /* Remove o padding do container de visualização principal */
@@ -54,22 +52,23 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Lista de Vendedores
+#Vendedores
 telas = {
-    "📊 Visão Geral": "ReportSection",
-    "👤 Vendedor 1": "ReportSection1",
-    "👤 Vendedor 2": "ReportSection2",
-    "👤 Vendedor 3": "ReportSection3",
+    "📊 Visão Geral": "9646ffcb14e85fa2adf4",
+    "👤 Arthur": "068bfb5551b049c00271",
+    "👤 Júlio Cesar": "ba7466568c206d700536",
+    "👤 Livian": "0a0db2b850767d5f3f9b",
+    "👤 Marcio": "d1c3c0c7e74bb1e5719b",
+    "👤 Miguel": "7fce0ef3ee0964b7ab6b",
+    "👤 Thais": "654e7dc6f349ae3dec5c",
 }
 nomes_vendedores = list(telas.keys())
 
-# 4. Estado da Sessão
 if 'indice' not in st.session_state:
     st.session_state.indice = 0
 if 'auto_loop' not in st.session_state:
     st.session_state.auto_loop = True
 
-# 5. Sidebar com Navegação e Rodapé
 with st.sidebar:
     st.title("Fox System")
     st.subheader("Projeto Janox")
@@ -83,27 +82,24 @@ with st.sidebar:
     st.divider()
     st.session_state.auto_loop = st.toggle("Giro Automático (30s)", value=st.session_state.auto_loop)
     
-    # Rodapé com link para o GitHub
     st.markdown("---")
     st.markdown(
         'Desenvolvido por [Fox Development](https://github.com/Fox-System-Development)', 
         unsafe_allow_html=True
     )
 
-# Sincronização manual
 novo_indice = nomes_vendedores.index(escolha)
 if novo_indice != st.session_state.indice:
     st.session_state.indice = novo_indice
     st.rerun()
 
-# 6. Exibição do Power BI
-url_base = "https://playground.powerbi.com/sampleReportEmbed"
+url_base = "https://app.powerbi.com/reportEmbed?reportId=fc3f2b99-27c1-4737-8b5a-4a056d928ea1&autoAuth=true&ctid=07bd24b4-6a91-4018-a004-47134c9ac99f"
 id_pagina = telas[nomes_vendedores[st.session_state.indice]]
-url_final = f"{url_base}?pageName={id_pagina}&navContentPaneEnabled=false"
 
-components.iframe(url_final, height=920)
+url_final = f"{url_base}&pageName={id_pagina}&navContentPaneEnabled=false"
 
-# 7. Lógica do Temporizador
+components.iframe(url_final, height=830)
+
 if st.session_state.auto_loop:
     time.sleep(30)
     st.session_state.indice = (st.session_state.indice + 1) % len(nomes_vendedores)
